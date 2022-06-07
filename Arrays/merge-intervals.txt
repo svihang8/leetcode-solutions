@@ -1,0 +1,33 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        List<int[]> merge = new ArrayList<>();
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        
+        merge.add(intervals[0]);
+        int topstart = intervals[0][0];
+        int topend = intervals[0][1];
+        for(int i = 1 ; i < intervals.length ; i++) {
+            int nstart = intervals[i][0];
+            int nend = intervals[i][1];
+            if(nstart <= topend) {
+                topend = Math.max(topend, nend);
+                merge.get(merge.size() - 1)[1] = topend;
+            } else {
+                merge.add(intervals[i]);
+                topstart = nstart;
+                topend = nend;
+            }
+        }
+        
+        int[][] rv = new int[merge.size()][2];
+        
+        for(int i = 0 ; i < merge.size() ; i++) {
+            int[] interval = merge.get(i);
+            rv[i][0] = interval[0];
+            rv[i][1] = interval[1];
+        }
+        
+        return rv;        
+        
+    }
+}
